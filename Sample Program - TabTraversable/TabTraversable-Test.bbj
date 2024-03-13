@@ -1,0 +1,89 @@
+REM /**
+REM  * TabTraversable-Test.bbj
+REM  * @author bryanhighhill
+REM  *
+REM  */
+
+sysgui = unt
+
+open (sysgui)"X0"
+bbj! = BBjAPI()
+sysgui! = bbj!.getSysGui()
+web! = bbj!.getWebManager()
+
+winMain! = sysgui!.addWindow("Tab Test", $01111000$)
+winMain!.setStyle("max-width", "500px")
+winMain!.setStyle("padding-left", "3em")
+winMain!.setStyle("padding-right", "3em")
+winMain!.setStyle("padding-top", "3em")
+
+firstName! = winMain!.addEditBox("")
+firstName!.setAttribute("label", "First")
+firstName!.setPlaceholder("First")
+firstName!.setStyle("width", "48%")
+firstName!.setStyle("margin-right", ".5em")
+
+lastName! = winMain!.addEditBox("")
+lastName!.setAttribute("label", "Last")
+lastName!.setPlaceholder("Last")
+lastName!.setStyle("width", "48%")
+lastName!.setStyle("margin-left", ".5em")
+
+thoughts! = winMain!.addCEdit("")
+thoughts!.setAttribute("label", "Share your thoughts")
+thoughts!.setPlaceholder("Thoughts...")
+thoughts!.setStyle("width", "100%")
+thoughts!.setStyle("margin-top", "3em")
+
+dayOfWeek! = winMain!.addListButton("")
+dayOfWeek!.setAttribute("label", "Day")
+dayOfWeek!.addItem("Monday")
+dayOfWeek!.addItem("Tuesday")
+dayOfWeek!.addItem("Wednesday")
+dayOfWeek!.addItem("Thursday")
+dayOfWeek!.addItem("Friday")
+dayOfWeek!.addItem("Saturday")
+dayOfWeek!.addItem("Sunday")
+dayOfWeek!.setStyle("width", "48%")
+dayOfWeek!.setStyle("margin-top", "3em")
+dayOfWeek!.setStyle("margin-right", ".5em")
+
+date! = winMain!.addInputD()
+date!.setAttribute("label", "Date")
+date!.setAttribute("visible-calendar-icon","true")
+date!.setAttribute("show-weeks","true")
+date!.setStyle("width", "48%")
+date!.setStyle("margin-top", "3em")
+date!.setStyle("margin-left", ".5em")
+
+winChild! = winMain!.addChildWindow("Buttons", $00108800$, sysgui!.getAvailableContext())
+winChild!.setStyle("margin-top", "3em")
+rem winChild! eats a tab if Submit or Cancel button IDs are set to 1 or 2
+submit! = winChild!.addButton(111, "SUBMIT")
+cancel! = winChild!.addButton(3, "CANCEL")
+submit!.setStyle("width", "48%")
+submit!.setStyle("margin-right", ".5em")
+submit!.setCallback(BBjControl.ON_BUTTON_PUSH, "onSubmit")
+cancel!.setStyle("width", "48%")
+cancel!.setStyle("margin-left", ".5em")
+cancel!.setCallback(BBjControl.ON_BUTTON_PUSH, "onCancel")
+
+process_events
+
+onSubmit:
+    i = msgbox("Submitted", sysgui!.MSGBOX_BUTTONS_OK + sysgui!.MSGBOX_ICON_INFORMATION, "Submit")
+    firstName!.setText("")
+    lastName!.setText("")
+    thoughts!.setText("")
+    dayOfWeek!.setText("")
+    date!.setText("")
+return
+
+onCancel:
+    i = msgbox("Canceled", sysgui!.MSGBOX_BUTTONS_OK + sysgui!.MSGBOX_ICON_INFORMATION, "Cancel")
+    firstName!.setText("")
+    lastName!.setText("")
+    thoughts!.setText("")
+    dayOfWeek!.setText("")
+    date!.setText("")
+return
